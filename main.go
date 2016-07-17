@@ -2,36 +2,34 @@ package main
 
 import (
 	"fmt"
-	"github.com/gerty-monit/core"
-	a "github.com/gerty-monit/core/alarms"
-	m "github.com/gerty-monit/core/monitors"
+	core "github.com/gerty-monit/core"
 	"log"
 )
 
-func tcpMonitors() []m.Monitor {
-	google := m.NewTcpMonitor("Google IP A", "Try to connect to Google port 80", "181.15.96.152", 80)
-	google2 := m.NewTcpMonitor("Google IP B", "Try to connect to Google port 80", "172.217.29.3", 80)
-	return []m.Monitor{google, google2}
+func tcpMonitors() []core.Monitor {
+	google := core.NewTcpMonitor("Google IP A", "Try to connect to Google port 80", "181.15.96.152", 80)
+	google2 := core.NewTcpMonitor("Google IP B", "Try to connect to Google port 80", "172.217.29.3", 80)
+	return []core.Monitor{google, google2}
 }
 
 func main() {
 	port := 8080
-	server := gerty.GertyServer{}
-	facebook := m.NewHttpMonitor("Facebook Home", "Try to reach facebook home via Http", "http://www.facebook.com")
-	server.Groups = []m.Group{
-		m.Group{Name: "Network", Monitors: tcpMonitors()},
-		m.Group{Name: "Http", Monitors: []m.Monitor{facebook}},
+	server := core.GertyServer{}
+	facebook := core.NewHttpMonitor("Facebook Home", "Try to reach facebook home via Http", "http://www.facebook.com")
+	server.Groups = []core.Group{
+		core.Group{Name: "Network", Monitors: tcpMonitors()},
+		core.Group{Name: "Http", Monitors: []core.Monitor{facebook}},
 	}
 
 	yourSlackHook := "https://hooks.slack.com/services/FOO/BAR/BAZ"
-	slackAlarm := a.NewSlackAlarm(yourSlackHook)
+	slackAlarm := core.NewSlackAlarm(yourSlackHook)
 
 	fromAddress := "no-reply@example.com"
 	toAddress := "alarms@example.com"
 	awsSmtpUser := "AWS_EMAIL_USER"
 	awsSmtpPass := "AWS_EMAIL_PASS"
 	dashboardHome := "https://alarms.example.com"
-	emailAlarm := a.NewEmailAlarm(
+	emailAlarm := core.NewEmailAlarm(
 		"email-smtp.us-east-1.amazonaws.com",
 		"587",
 		awsSmtpUser,
