@@ -43,7 +43,7 @@ func main() {
 		slackAlarm.Name(),
 		emailAlarm.Name())
 
-	// server.Alarms = []a.Alarm{
+	// server.Alarms = []core.Alarm{
 	// 	slackAlarm,
 	// 	emailAlarm,
 	// }
